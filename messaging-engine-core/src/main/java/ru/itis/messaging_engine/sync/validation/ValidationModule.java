@@ -1,0 +1,53 @@
+package ru.itis.messaging_engine.sync.validation;
+
+import ru.itis.messaging_engine.PoliteExecutor;
+import ru.itis.messaging_engine.api.crypto.CryptoExecutor;
+import ru.itis.messaging_engine.api.event.EventBus;
+import ru.itis.messaging_engine.api.lifecycle.LifecycleManager;
+import ru.itis.messaging_engine.api.sync.validation.ValidationManager;
+
+import java.util.concurrent.Executor;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+
+@Module
+public class ValidationModule {
+
+	public static class EagerSingletons {
+		@Inject
+		ValidationManager validationManager;
+	}
+
+	/**
+	 * The maximum number of validation tasks to delegate to the crypto
+	 * executor concurrently.
+	 * <p>
+	 * The number of available processors can change during the lifetime of the
+	 * JVM, so this is just a reasonable guess.
+	 */
+	private static final int MAX_CONCURRENT_VALIDATION_TASKS =
+			Math.max(1, Runtime.getRuntime().availableProcessors() - 1);
+
+	@Provides
+	@Singleton
+	ValidationManager provideValidationManager(
+			LifecycleManager lifecycleManager, EventBus eventBus,
+			ValidationManagerImpl validationManager) {
+		lifecycleManager.registerService(validationManager);
+		eventBus.addListener(validationManager);
+		return validationManager;
+	}
+
+	@Provides
+	@Singleton
+	@ValidationExecutor
+	Executor provideValidationExecutor(
+			@CryptoExecutor Executor cryptoExecutor) {
+		return new PoliteExecutor("ValidationExecutor", cryptoExecutor,
+				MAX_CONCURRENT_VALIDATION_TASKS);
+	}
+}

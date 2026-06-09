@@ -1,0 +1,54 @@
+package ru.itis.meshy.android.sharing;
+
+import androidx.annotation.UiThread;
+import androidx.lifecycle.LiveData;
+
+import ru.itis.messaging_engine.api.contact.ContactId;
+import ru.itis.messaging_engine.api.event.EventBus;
+import org.briarproject.nullsafety.NotNullByDefault;
+
+import java.util.Collection;
+
+@NotNullByDefault
+public interface SharingController {
+
+	/**
+	 * Call this when the owning ViewModel gets cleared,
+	 * so the {@link EventBus} can get unregistered.
+	 */
+	void onCleared();
+
+	/**
+	 * Adds one contact to be tracked.
+	 */
+	@UiThread
+	void add(ContactId c);
+
+	/**
+	 * Adds a collection of contacts to be tracked.
+	 */
+	@UiThread
+	void addAll(Collection<ContactId> contacts);
+
+	/**
+	 * Call this when the contact identified by c is no longer sharing
+	 * the given group identified by GroupId g.
+	 */
+	@UiThread
+	void remove(ContactId c);
+
+	/**
+	 * Returns the total number of contacts that have been added.
+	 */
+	LiveData<SharingInfo> getSharingInfo();
+
+	class SharingInfo {
+		public final int total, online;
+
+		SharingInfo(int total, int online) {
+			this.total = total;
+			this.online = online;
+		}
+	}
+
+}

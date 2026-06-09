@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <group
+        android:scaleX="0.147945"
+        android:scaleY="0.147945"
+        android:translateX="21.6"
+        android:translateY="32.0301">
+
+        <!-- Линия 1: левая нижняя -->
+        <group
+            android:pivotX="37.63"
+            android:pivotY="252.13"
+            android:rotation="-165">
+            <path
+                android:pathData="M37.63,252.13 h6 v157.09 h-6 Z"
+                android:fillColor="#69F694"
+                android:strokeColor="#FFC107"
+                android:strokeWidth="3" />
+        </group>
+
+        <!-- Линия 2: правая (от верхнего пика к нижнему правому узлу) -->
+        <group
+            android:pivotX="343"
+            android:pivotY="43.33"
+            android:rotation="-15">
+            <path
+                android:pathData="M343,43.33 h9 v215.40 h-9 Z"
+                android:fillColor="#5DF58B"
+                android:strokeColor="#FFC107"
+                android:strokeWidth="3" />
+        </group>
+
+        <!-- Линия 3: средняя правая (от центрального узла к верхнему пику) -->
+        <group
+            android:pivotX="232.36"
+            android:pivotY="137.30"
+            android:rotation="-135">
+            <path
+                android:pathData="M232.36,137.30 h7 v134.26 h-7 Z"
+                android:fillColor="#6A8AF4"
+                android:strokeColor="#FFC107"
+                android:strokeWidth="2" />
+        </group>
+
+        <!-- Линия 4: средняя левая (от второго узла к центральному) -->
+        <group
+            android:pivotX="103.52"
+            android:pivotY="94.87"
+            android:rotation="-62">
+            <path
+                android:pathData="M103.52,94.87 h7 v116.06 h-7 Z"
+                android:fillColor="#6A8AF4"
+                android:strokeColor="#FFC107"
+                android:strokeWidth="2" />
+        </group>
+
+        <!-- Узел 1: левый нижний (оранжевый, cx=27.5 cy=269.5 r=27.5) -->
+        <path
+            android:pathData="M0,269.5 a27.5,27.5 0 1,0 55,0 a27.5,27.5 0 1,0 -55,0 Z"
+            android:fillColor="#F5A017" />
+
+        <!-- Узел 2: левый верхний (жёлтый, cx=82.5 cy=82.5 r=27.5) -->
+        <path
+            android:pathData="M55,82.5 a27.5,27.5 0 1,0 55,0 a27.5,27.5 0 1,0 -55,0 Z"
+            android:fillColor="#FFC107" />
+
+        <!-- Узел 3: центральный (жёлтый, cx=211.5 cy=147.5 r=27.5) -->
+        <path
+            android:pathData="M184,147.5 a27.5,27.5 0 1,0 55,0 a27.5,27.5 0 1,0 -55,0 Z"
+            android:fillColor="#FFC107" />
+
+        <!-- Узел 4: правый верхний / пик (ярко-жёлтый, cx=342.5 cy=27.5 r=27.5) -->
+        <path
+            android:pathData="M315,27.5 a27.5,27.5 0 1,0 55,0 a27.5,27.5 0 1,0 -55,0 Z"
+            android:fillColor="#FFD600" />
+
+        <!-- Узел 5: правый нижний (оранжевый, cx=410.5 cy=269.5 r=27.5) -->
+        <path
+            android:pathData="M383,269.5 a27.5,27.5 0 1,0 55,0 a27.5,27.5 0 1,0 -55,0 Z"
+            android:fillColor="#F5A017" />
+
+    </group>
+
+</vector>

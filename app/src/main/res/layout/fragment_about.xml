@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="16dp">
+
+	<TextView
+		android:id="@+id/MeshyVersion"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/meshy_version"
+		android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<TextView
+		android:id="@+id/TorVersion"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/tor_version"
+		android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/MeshyVersion"
+        android:visibility="gone"/>
+
+<!--	<TextView-->
+<!--		android:id="@+id/LinksTitle"-->
+<!--		android:layout_width="match_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:layout_marginTop="16dp"-->
+<!--		android:text="@string/links"-->
+<!--		android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"-->
+<!--		app:layout_constraintStart_toStartOf="parent"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/TorVersion" />-->
+
+<!--	<TextView-->
+<!--		android:id="@+id/MeshyWebsite"-->
+<!--		android:layout_width="match_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:text="@string/meshy_website"-->
+<!--		android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"-->
+<!--		app:layout_constraintStart_toStartOf="parent"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/LinksTitle"-->
+<!--        android:visibility="gone"/>-->
+
+<!--	<TextView-->
+<!--		android:id="@+id/MeshySourceCode"-->
+<!--		android:layout_width="match_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:text="@string/meshy_source_code"-->
+<!--		android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"-->
+<!--		app:layout_constraintStart_toStartOf="parent"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/MeshyWebsite" />-->
+
+<!--	<TextView-->
+<!--		android:id="@+id/MeshyChangelog"-->
+<!--		android:layout_width="match_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:text="@string/meshy_changelog"-->
+<!--		android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"-->
+<!--		app:layout_constraintStart_toStartOf="parent"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/MeshySourceCode" />-->
+
+<!--	<TextView-->
+<!--		android:id="@+id/MeshyPrivacyPolicy"-->
+<!--		android:layout_width="match_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:text="@string/meshy_privacy_policy"-->
+<!--		android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"-->
+<!--		app:layout_constraintStart_toStartOf="parent"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/MeshyChangelog" />-->
+
+<!--	<TextView-->
+<!--		android:id="@+id/TranslatorThanks"-->
+<!--		android:layout_width="match_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:layout_marginTop="16dp"-->
+<!--		android:text="@string/translator_thanks"-->
+<!--		android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"-->
+<!--		app:layout_constraintStart_toStartOf="parent"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/MeshyPrivacyPolicy" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

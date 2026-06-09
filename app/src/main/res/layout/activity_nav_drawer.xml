@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/drawer_layout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".android.navdrawer.NavDrawerActivity">
+
+	<!-- The first child(root) is the content view -->
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/constraintLayout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<include
+			android:id="@+id/appBar"
+			layout="@layout/toolbar"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+
+		<androidx.fragment.app.FragmentContainerView
+			android:id="@+id/fragmentContainer"
+			android:name="ru.itis.meshy.android.contact.ContactListFragment"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+	<!-- The second child is the menu -->
+	<include
+		layout="@layout/navigation_menu"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_gravity="start" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

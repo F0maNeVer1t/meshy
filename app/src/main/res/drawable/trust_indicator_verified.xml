@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="31dp"
+    android:height="12dp"
+    android:viewportWidth="49"
+    android:viewportHeight="20">
+
+    <!--
+        Галочка размером с одну # (bbox x=2.5..15.5, y=2.5..17.5).
+        Острые углы, без скруглений.
+    -->
+    <path
+        android:fillColor="#67a60f"
+        android:pathData="M17.6640,15.0176 L22.7226,18.1792 L31.3419,3.0954
+                  L29.2581,1.9046 L21.8774,14.8208 L18.9360,12.9824 Z" />
+
+</vector>

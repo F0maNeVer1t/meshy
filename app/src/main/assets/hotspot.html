@@ -1,0 +1,131 @@
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #F2F2F2;
+            font-family: Roboto,Arial,Helvetica,sans-serif;
+            font-size: 14px;
+            margin: 0;
+            height: 100%;
+        }
+        div#top {
+            background-color: #FFFFFF;
+            padding: 16px;
+        }
+        div#bottom {
+            padding: 16px 32px;
+            margin-top: 12px;
+        }
+        a.button {
+            background-color: #82C91E;
+            width: 100%;
+            display: block;
+            box-sizing: border-box;
+            padding: 12px 32px !important;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            color: #000000 !important;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            text-transform: uppercase;
+            text-align: center;
+            margin: 20px auto 20px auto;
+        }
+        ol {
+            list-style: none;
+            counter-reset: briar-counter;
+            padding-left: 40px;
+        }
+        ol li {
+            counter-increment: briar-counter;
+            margin-bottom: 2em;
+        }
+        ol li::before {
+            content: counter(briar-counter);
+            background-color: #82C91E;
+            color: #000000 !important;
+            font-weight: bold;
+            border-radius: 70px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            position: absolute;
+            left: 32px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="top">
+    <svg style="width:156px;height:47px;" viewBox="0 0 778 235">
+        <!-- Логотип meshy: вписан в зону 0..235x0..235 -->
+        <!-- scale=0.450685, tx=18.8, ty=50.5733 -->
+        <g transform="translate(18.8,50.5733) scale(0.450685,0.450685)">
+            <!-- Линия 1: левая нижняя -->
+            <g transform="rotate(-165,37.63,252.13)">
+                <rect x="37.63" y="252.13" width="6" height="157.09"
+                      style="fill:#69F694;stroke:#FFC107;stroke-width:3"/>
+            </g>
+            <!-- Линия 2: правая -->
+            <g transform="rotate(-15,343,43.33)">
+                <rect x="343" y="43.33" width="9" height="215.40"
+                      style="fill:#5DF58B;stroke:#FFC107;stroke-width:3"/>
+            </g>
+            <!-- Линия 3: средняя правая -->
+            <g transform="rotate(-135,232.36,137.30)">
+                <rect x="232.36" y="137.30" width="7" height="134.26"
+                      style="fill:#6A8AF4;stroke:#FFC107;stroke-width:2"/>
+            </g>
+            <!-- Линия 4: средняя левая -->
+            <g transform="rotate(-62,103.52,94.87)">
+                <rect x="103.52" y="94.87" width="7" height="116.06"
+                      style="fill:#6A8AF4;stroke:#FFC107;stroke-width:2"/>
+            </g>
+            <!-- Узлы -->
+            <circle cx="27.5"  cy="269.5" r="27.5" style="fill:#F5A017"/>
+            <circle cx="82.5"  cy="82.5"  r="27.5" style="fill:#FFC107"/>
+            <circle cx="211.5" cy="147.5" r="27.5" style="fill:#FFC107"/>
+            <circle cx="342.5" cy="27.5"  r="27.5" style="fill:#FFD600"/>
+            <circle cx="410.5" cy="269.5" r="27.5" style="fill:#F5A017"/>
+        </g>
+        <!-- Надпись "meshy" (LiberationSans Bold, зона x=301..778 y=62..172) -->
+        <path style="fill:#000000"
+              d="M360.323 140.665V96.534Q360.323 75.814 348.400 75.814Q342.220 75.814 338.330 82.139Q334.441 88.464 334.441 98.497V140.665H314.011V79.594Q314.011 73.269 313.829 69.234Q313.647 65.199 313.429 62.000H332.914Q333.132 63.381 333.495 69.379Q333.859 75.377 333.859 77.631H334.150Q337.930 68.616 343.565 64.545Q349.199 60.473 357.051 60.473Q375.082 60.473 378.935 77.631H379.371Q383.370 68.471 388.968 64.472Q394.566 60.473 403.218 60.473Q414.705 60.473 420.739 68.289Q426.774 76.104 426.774 90.718V140.665H406.489V96.534Q406.489 75.814 394.566 75.814Q388.604 75.814 384.788 81.594Q380.971 87.373 380.607 97.552V140.665Z M478.611 142.119Q460.871 142.119 451.347 131.613Q441.823 121.108 441.823 100.969Q441.823 81.484 451.493 71.015Q461.162 60.546 478.902 60.546Q495.842 60.546 504.784 71.779Q513.727 83.011 513.727 104.677V105.258H463.271Q463.271 116.746 467.524 122.598Q471.777 128.451 479.629 128.451Q490.462 128.451 493.297 119.072L512.563 120.744Q504.203 142.119 478.611 142.119ZM478.611 73.414Q471.413 73.414 467.524 78.431Q463.634 83.447 463.416 92.463H493.951Q493.370 82.939 489.371 78.176Q485.372 73.414 478.611 73.414Z M595.518 117.691Q595.518 129.105 586.175 135.612Q576.833 142.119 560.329 142.119Q544.117 142.119 535.501 136.993Q526.886 131.868 524.051 121.035L542.008 118.345Q543.535 123.943 547.279 126.270Q551.023 128.596 560.329 128.596Q568.908 128.596 572.834 126.415Q576.760 124.234 576.760 119.581Q576.760 115.800 573.598 113.583Q570.435 111.365 562.874 109.839Q545.571 106.422 539.536 103.477Q533.502 100.533 530.339 95.843Q527.177 91.154 527.177 84.320Q527.177 73.051 535.865 66.762Q544.553 60.473 560.475 60.473Q574.507 60.473 583.049 65.926Q591.592 71.379 593.700 81.703L575.597 83.593Q574.725 78.794 571.308 76.432Q567.891 74.069 560.475 74.069Q553.205 74.069 549.569 75.923Q545.934 77.777 545.934 82.139Q545.934 85.556 548.733 87.555Q551.532 89.555 558.148 90.863Q567.382 92.753 574.543 94.753Q581.704 96.752 586.030 99.515Q590.356 102.278 592.937 106.603Q595.518 110.929 595.518 117.691Z M632.160 77.704Q636.304 68.689 642.557 64.617Q648.809 60.546 657.461 60.546Q669.966 60.546 676.655 68.252Q683.343 75.959 683.343 90.790V140.665H662.986V96.607Q662.986 75.886 648.955 75.886Q641.539 75.886 636.995 82.248Q632.451 88.609 632.451 98.570V140.665H612.021V32.773H632.451V62.218Q632.451 70.143 631.869 77.704Z M713.152 171.564Q705.809 171.564 700.283 170.619V156.078Q704.136 156.660 707.335 156.660Q711.698 156.660 714.569 155.278Q717.441 153.897 719.731 150.698Q722.021 147.499 724.857 139.865L693.740 62.000H715.333L727.692 98.861Q730.600 106.785 735.035 123.143L736.853 116.237L741.579 99.151L753.211 62.000H774.586L743.469 144.809Q737.216 159.931 730.491 165.748Q723.766 171.564 713.152 171.564Z"/>
+    </svg>
+
+    <h2 id="download_title">Download Meshy 1.2.20</h2>
+
+    <span id="download_intro">Someone nearby shared Meshy with you.</span>
+
+    <a href="/app.apk" class="button">
+        <svg aria-hidden="true"
+             style="width:24px;height:24px;margin-right:6px;vertical-align:middle;"
+             viewBox="0 0 24 24">
+            <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/>
+        </svg>
+        <span id="download_button">Download Meshy</span>
+    </a>
+
+    <span id="download_outro">After the download is complete, open the downloaded file and install it.</span>
+</div>
+
+<div id="bottom">
+    <h3 id="troubleshooting_title">Troubleshooting</h3>
+    <ol>
+        <li id="troubleshooting_1">If you can't download the app, try it with a different web
+            browser app.
+        </li>
+        <li id="troubleshooting_2">To install the downloaded app,
+            you might need to allow your browser to install unknown apps.
+            We recommend to undo that after successful installation.
+        </li>
+    </ol>
+</div>
+
+</body>
+</html>

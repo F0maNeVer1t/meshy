@@ -1,0 +1,74 @@
+apply plugin: 'com.android.library'
+
+android {
+	compileSdkVersion 35
+	buildToolsVersion '35.0.0'
+	packagingOptions {
+		jniLibs {
+			keepDebugSymbols += ['**/*.so']
+		}
+	}
+
+
+	defaultConfig {
+		minSdkVersion 21
+		targetSdkVersion 35
+		consumerProguardFiles 'proguard-rules.txt'
+	}
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	namespace 'ru.itis.messaging_engine'
+	lint {
+		warning 'LintError', 'InvalidPackage', 'MissingPermission', 'InlinedApi', 'ObsoleteSdkInt', 'Override', 'NewApi', 'UnusedAttribute'
+	}
+
+}
+
+configurations {
+	tor
+}
+
+dependencies {
+	api 'org.briarproject:dont-kill-me-lib:0.2.8'
+
+	implementation project(':messaging-engine-api')
+
+	implementation project(':messaging-engine-core')
+
+	implementation 'androidx.annotation:annotation:1.5.0'
+	implementation "org.briarproject:onionwrapper-android:${libs.versions.onionwrapper.get()}"
+
+	tor "org.briarproject:tor-android:${libs.versions.tor.get()}"
+	tor "org.briarproject:lyrebird-android:${libs.versions.lyrebird.get()}"
+
+	annotationProcessor "com.google.dagger:dagger-compiler:${libs.versions.dagger.get()}"
+
+	compileOnly 'javax.annotation:jsr250-api:1.0'
+}
+
+def torLibsDir = 'src/main/jniLibs'
+
+task cleanTorBinaries {
+	outputs.dir torLibsDir
+	doLast {
+		delete fileTree(torLibsDir)
+	}
+}
+
+clean.dependsOn cleanTorBinaries
+
+task unpackTorBinaries {
+	outputs.dir torLibsDir
+	doLast {
+		copy {
+			from configurations.tor.collect { zipTree(it) }
+			into torLibsDir
+		}
+	}
+	dependsOn cleanTorBinaries
+}
+
+preBuild.dependsOn unpackTorBinaries

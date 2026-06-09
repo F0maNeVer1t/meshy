@@ -1,0 +1,254 @@
+[versions]
+# ═══════════════════════════════════════════════════════════════════
+# SDK & Build Tools
+# ═══════════════════════════════════════════════════════════════════
+compileSdk = "35"
+minSdk = "21"
+targetSdk = "35"
+buildTools = "35.0.0"
+
+# App versioning (meshy-android)
+versionCode = "10517"
+versionName = "1.5.17"
+
+# Language & JVM
+java = "17"
+# Bumped from 1.9.25 → 2.3.21 (latest stable on 23-Apr-2026).
+# Compose Compiler plugin is bundled with Kotlin since 2.0, so we no
+# longer pin its version separately — see the [plugins] section.
+kotlin = "2.1.21"
+
+# ═══════════════════════════════════════════════════════════════════
+# Shared across modules (were in root ext {})
+# ═══════════════════════════════════════════════════════════════════
+dagger = "2.57.2"
+okhttp = "4.12.0"
+jsoup = "1.15.3"
+junit = "4.13.2"
+jmock = "2.12.0"
+# Coroutines — required for ViewModel + StateFlow foundation under
+# Compose. Stays usable from Java/Dagger code.
+kotlinx-coroutines = "1.11.0"
+
+# TODO [НЕ НУЖЕН для вашего проекта] — Tor и сопутствующие.
+# Удалить после вычистки Tor-плагинов из messaging_engine-core / messaging_engine-android.
+tor = "0.4.8.22"
+# TODO [НЕ НУЖЕН] — Lyrebird (obfs4 pluggable transport для Tor)
+lyrebird = "0.6.2"
+# TODO [НЕ НУЖЕН] — OnionWrapper (обёртка над Tor)
+onionwrapper = "0.1.4"
+
+# Jackson — используется в messaging_engine-core, meshy-core (JSON)
+jackson = "2.13.4"
+# BouncyCastle — криптография, messaging_engine-core
+bouncy-castle = "1.82"
+# MockWebServer — тесты в messaging_engine-core / meshy-core
+mockwebserver = "4.10.0"
+
+# ═══════════════════════════════════════════════════════════════════
+# AndroidX (meshy-android)
+# ═══════════════════════════════════════════════════════════════════
+fragment = "1.6.2"
+preference = "1.2.1"
+exifinterface = "1.3.7"
+# Bumped 2.6.2 → 2.8.7 so we get lifecycle-runtime-compose and
+# lifecycle-viewmodel-compose stable. LiveData artifact stays the
+# same package, so existing Java code still compiles.
+lifecycle = "2.8.7"
+constraintlayout = "2.1.4"
+recyclerview-selection = "1.1.0"
+core-ktx = "1.13.1"
+androidx-appcompat = "1.7.0"
+
+# ═══════════════════════════════════════════════════════════════════
+# Google Material
+# ═══════════════════════════════════════════════════════════════════
+material = "1.9.0"
+
+# ═══════════════════════════════════════════════════════════════════
+# Image loading
+# ═══════════════════════════════════════════════════════════════════
+glide = "4.16.0"
+
+# ═══════════════════════════════════════════════════════════════════
+# QR / Barcode
+# ═══════════════════════════════════════════════════════════════════
+zxing = "3.3.3"
+
+# ═══════════════════════════════════════════════════════════════════
+# UI Libraries (meshy-android)
+# ═══════════════════════════════════════════════════════════════════
+circleimageview = "3.1.0"
+material-tap-target-prompt = "3.3.2"
+emoji-google = "0.9.0"
+material-fab-speed-dial = "1.2.1"
+photoview = "2.3.0"
+
+# ═══════════════════════════════════════════════════════════════════
+# Local HTTP server
+# ═══════════════════════════════════════════════════════════════════
+nanohttpd = "2.3.1"
+
+# ═══════════════════════════════════════════════════════════════════
+# Guardian Project (panic button)
+# ═══════════════════════════════════════════════════════════════════
+panic = "1.0"
+
+# ═══════════════════════════════════════════════════════════════════
+# Testing
+# ═══════════════════════════════════════════════════════════════════
+mockito = "5.1.1"
+robolectric = "4.8.2"
+espresso = "3.3.0"
+espresso-core-test = "3.5.0"
+androidx-test-runner = "1.4.0"
+androidx-test-ext-junit = "1.1.5"
+fragment-testing = "1.4.0"
+arch-core-testing = "2.1.0"
+test-orchestrator = "1.3.0"
+screengrab = "2.1.1"
+falcon = "2.2.0"
+uiautomator = "2.2.0"
+
+# ═══════════════════════════════════════════════════════════════════
+# Build plugins
+# ═══════════════════════════════════════════════════════════════════
+# 8.13.0 is the max AGP supported by Kotlin 2.3.x — no change needed.
+agp = "8.13.0"
+animalsniffer = "2.0.1"
+
+
+# ═════════════════════════════════════════════════════════════════════
+[libraries]
+# ═════════════════════════════════════════════════════════════════════
+
+# ── Kotlin ───────────────────────────────────────────────────────────
+# Since Kotlin 1.8 the -jdk7 / -jdk8 stdlib artifacts are folded into
+# plain kotlin-stdlib. We drop the suffix.
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+
+# ── Coroutines ───────────────────────────────────────────────────────
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+
+# ── DI (Dagger) — все модули ─────────────────────────────────────────
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+
+# ── Networking ───────────────────────────────────────────────────────
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+
+# ── HTML parsing — meshy-android ─────────────────────────────────────
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+
+# ── JSON — messaging_engine-core, meshy-core ─────────────────────────
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
+
+# ── Crypto — messaging-engine-core ───────────────────────────────────
+bouncy-castle-prov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncy-castle" }
+
+# ── TODO [НЕ НУЖЕН] Tor / Lyrebird / OnionWrapper ───────────────────
+# Версии оставлены под адаптацию build.gradle модулей
+# messaging_engine-core и messaging-engine-android.
+
+# ── AndroidX (meshy-android) ────────────────────────────────────────
+androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
+androidx-preference = { module = "androidx.preference:preference", version.ref = "preference" }
+androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycle" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+androidx-recyclerview-selection = { module = "androidx.recyclerview:recyclerview-selection", version.ref = "recyclerview-selection" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+
+# ── Google Material ──────────────────────────────────────────────────
+google-material = { module = "com.google.android.material:material", version.ref = "material" }
+
+# ── Image loading (Glide) ───────────────────────────────────────────
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+
+# ── QR ───────────────────────────────────────────────────────────────
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
+
+# ── UI (meshy-android) ──────────────────────────────────────────────
+circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
+material-tap-target-prompt = { module = "uk.co.samuelwall:material-tap-target-prompt", version.ref = "material-tap-target-prompt" }
+emoji-google = { module = "com.vanniktech:emoji-google", version.ref = "emoji-google" }
+material-fab-speed-dial = { module = "com.github.kobakei:MaterialFabSpeedDial", version.ref = "material-fab-speed-dial" }
+photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
+
+# ── HTTP server (meshy-android) ─────────────────────────────────────
+nanohttpd = { module = "org.nanohttpd:nanohttpd", version.ref = "nanohttpd" }
+
+# ── Guardian Project (meshy-android panic) ──────────────────────────
+panic = { module = "info.guardianproject.panic:panic", version.ref = "panic" }
+
+# ── Compile-only annotations ────────────────────────────────────────
+jsr250-api = { module = "javax.annotation:jsr250-api", version = "1.0" }
+
+# ── Testing ──────────────────────────────────────────────────────────
+junit = { module = "junit:junit", version.ref = "junit" }
+jmock-core = { module = "org.jmock:jmock", version.ref = "jmock" }
+jmock-junit4 = { module = "org.jmock:jmock-junit4", version.ref = "jmock" }
+jmock-imposters = { module = "org.jmock:jmock-imposters", version.ref = "jmock" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
+androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragment-testing" }
+androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "arch-core-testing" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core-test" }
+androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
+androidx-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
+androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "test-orchestrator" }
+screengrab = { module = "tools.fastlane:screengrab", version.ref = "screengrab" }
+falcon = { module = "com.jraska:falcon", version.ref = "falcon" }
+uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomator" }
+
+
+# ═════════════════════════════════════════════════════════════════════
+[bundles]
+# ═════════════════════════════════════════════════════════════════════
+androidx-lifecycle = [
+    "androidx-lifecycle-viewmodel-ktx",
+    "androidx-lifecycle-livedata",
+    "androidx-lifecycle-livedata-ktx",
+    "androidx-lifecycle-runtime-ktx",
+]
+jmock = [
+    "jmock-core",
+    "jmock-junit4",
+    "jmock-imposters",
+]
+espresso-android = [
+    "androidx-espresso-core",
+    "androidx-espresso-contrib",
+    "androidx-espresso-intents",
+]
+jackson = [
+    "jackson-databind",
+    "jackson-core",
+    "jackson-annotations",
+]
+kotlinx-coroutines = [
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-android",
+]
+
+
+# ═════════════════════════════════════════════════════════════════════
+[plugins]
+# ═════════════════════════════════════════════════════════════════════
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+animalsniffer = { id = "ru.vyarus.animalsniffer", version.ref = "animalsniffer" }
