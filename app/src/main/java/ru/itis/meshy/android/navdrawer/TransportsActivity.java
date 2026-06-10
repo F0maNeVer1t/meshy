@@ -1,6 +1,7 @@
 package ru.itis.meshy.android.navdrawer;
 
 import static android.Manifest.permission.BLUETOOTH_CONNECT;
+import static android.Manifest.permission.NEARBY_WIFI_DEVICES;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -8,9 +9,6 @@ import static ru.itis.messaging_engine.api.plugin.Plugin.State.ACTIVE;
 import static ru.itis.messaging_engine.api.plugin.Plugin.State.DISABLED;
 import static ru.itis.messaging_engine.api.plugin.Plugin.State.ENABLING;
 import static ru.itis.messaging_engine.api.plugin.Plugin.State.STARTING_STOPPING;
-import static ru.itis.messaging_engine.api.plugin.TorConstants.REASON_BATTERY;
-import static ru.itis.messaging_engine.api.plugin.TorConstants.REASON_COUNTRY_BLOCKED;
-import static ru.itis.messaging_engine.api.plugin.TorConstants.REASON_MOBILE_DATA;
 import static ru.itis.meshy.android.util.PermissionUtils.areBluetoothPermissionsGranted;
 import static ru.itis.meshy.android.util.PermissionUtils.requestBluetoothPermissions;
 import static ru.itis.meshy.android.util.PermissionUtils.showDenialDialog;
@@ -32,6 +30,7 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions;
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -47,8 +46,8 @@ import ru.itis.messaging_engine.api.network.NetworkStatus;
 import ru.itis.messaging_engine.api.plugin.BluetoothConstants;
 import ru.itis.messaging_engine.api.plugin.LanTcpConstants;
 import ru.itis.messaging_engine.api.plugin.Plugin.State;
-import ru.itis.messaging_engine.api.plugin.TorConstants;
 import ru.itis.messaging_engine.api.plugin.TransportId;
+import ru.itis.messaging_engine.api.plugin.WifiDirectConstants;
 import ru.itis.meshy.R;
 import ru.itis.meshy.android.activity.ActivityComponent;
 import org.briarproject.nullsafety.MethodsNotNullByDefault;
@@ -76,6 +75,11 @@ public class TransportsActivity extends MeshyActivity {
 	private final ActivityResultLauncher<String[]> requestPermissionLauncher =
 			registerForActivityResult(new RequestMultiplePermissions(),
 					this::handleBtPermissionResult);
+
+	@RequiresApi(33)
+	private final ActivityResultLauncher<String> wifiDirectPermissionLauncher =
+			registerForActivityResult(new RequestPermission(),
+					this::handleWifiDirectPermissionResult);
 
 	@Override
 	public void injectActivity(ActivityComponent component) {
@@ -187,12 +191,12 @@ public class TransportsActivity extends MeshyActivity {
 			}
 		};
 
-		Transport tor = createTransport(TorConstants.ID,
+		Transport wifiDirect = createTransport(WifiDirectConstants.ID,
 				R.drawable.transport_wifi_direct, R.string.transport_wifi_direct,
 				R.string.wifi_direct_enable_title, R.string.wifi_direct_enable_summary,
 				R.string.wifi_direct_device_status_offline,
 				R.string.wifi_direct_plugin_status_inactive);
-		transports.add(tor);
+		transports.add(wifiDirect);
 
 		Transport wifi = createTransport(LanTcpConstants.ID,
 				R.drawable.transport_lan, R.string.transport_lan_long,
@@ -207,7 +211,7 @@ public class TransportsActivity extends MeshyActivity {
 		transports.add(bt);
 
 		viewModel.getNetworkStatus().observe(this, status -> {
-			updateTorResources(tor, status);
+			updateWifiDirectResources(wifiDirect);
 			updateWifiResources(wifi, status);
 			transportsAdapter.notifyDataSetChanged();
 		});
@@ -228,8 +232,33 @@ public class TransportsActivity extends MeshyActivity {
 			} else {
 				requestBtPermissions();
 			}
+		} else if (transportId.equals(WifiDirectConstants.ID) && enable
+				&& SDK_INT >= 33 && !isNearbyWifiPermissionGranted()) {
+			requestWifiDirectPermission();
 		} else {
 			viewModel.enableTransport(transportId, enable);
+		}
+	}
+
+	private boolean isNearbyWifiPermissionGranted() {
+		return checkSelfPermission(NEARBY_WIFI_DEVICES)
+				== android.content.pm.PackageManager.PERMISSION_GRANTED;
+	}
+
+	@RequiresApi(33)
+	private void requestWifiDirectPermission() {
+		wifiDirectPermissionLauncher.launch(NEARBY_WIFI_DEVICES);
+	}
+
+	@RequiresApi(33)
+	private void handleWifiDirectPermissionResult(boolean granted) {
+		if (granted) {
+			viewModel.enableTransport(WifiDirectConstants.ID, true);
+		} else {
+			transportsAdapter.notifyDataSetChanged();
+			showDenialDialog(this,
+					R.string.permission_bluetooth_title,
+					R.string.permission_bluetooth_denied_body);
 		}
 	}
 
@@ -244,18 +273,8 @@ public class TransportsActivity extends MeshyActivity {
 		else return android.R.color.tertiary_text_light;
 	}
 
-	private void updateTorResources(Transport tor, NetworkStatus status) {
-		if (status.isConnected()) {
-			if (status.isWifi()) {
-				tor.deviceStatus = R.string.tor_device_status_online_wifi;
-			} else {
-				tor.deviceStatus = R.string.tor_device_status_online_mobile;
-			}
-			tor.showPluginStatus = true;
-		} else {
-			tor.deviceStatus = R.string.tor_device_status_offline;
-			tor.showPluginStatus = false;
-		}
+	private void updateWifiDirectResources(Transport wifiDirect) {
+		wifiDirect.showPluginStatus = true;
 	}
 
 	private void updateWifiResources(Transport wifi, NetworkStatus status) {
@@ -280,8 +299,8 @@ public class TransportsActivity extends MeshyActivity {
 
 	@StringRes
 	private int getPluginStatus(TransportId id, State state) {
-		if (id.equals(TorConstants.ID)) {
-			return getTorPluginStatus(state);
+		if (id.equals(WifiDirectConstants.ID)) {
+			return getWifiDirectPluginStatus(state);
 		} else if (id.equals(LanTcpConstants.ID)) {
 			return getWifiPluginStatus(state);
 		} else if (id.equals(BluetoothConstants.ID)) {
@@ -290,24 +309,15 @@ public class TransportsActivity extends MeshyActivity {
 	}
 
 	@StringRes
-	private int getTorPluginStatus(State state) {
+	private int getWifiDirectPluginStatus(State state) {
 		if (state == ENABLING) {
-			return R.string.tor_plugin_status_enabling;
+			return R.string.wifi_direct_plugin_status_enabling;
 		} else if (state == ACTIVE) {
-			return R.string.tor_plugin_status_active;
+			return R.string.wifi_direct_plugin_status_active;
 		} else if (state == DISABLED) {
-			int reasons = viewModel.getReasonsTorDisabled();
-			if ((reasons & REASON_MOBILE_DATA) != 0) {
-				return R.string.tor_plugin_status_disabled_mobile_data;
-			} else if ((reasons & REASON_BATTERY) != 0) {
-				return R.string.tor_plugin_status_disabled_battery;
-			} else if ((reasons & REASON_COUNTRY_BLOCKED) != 0) {
-				return R.string.tor_plugin_status_disabled_country_blocked;
-			} else {
-				return R.string.tor_plugin_status_disabled;
-			}
+			return R.string.wifi_direct_plugin_status_disabled;
 		} else {
-			return R.string.tor_plugin_status_inactive;
+			return R.string.wifi_direct_plugin_status_inactive;
 		}
 	}
 

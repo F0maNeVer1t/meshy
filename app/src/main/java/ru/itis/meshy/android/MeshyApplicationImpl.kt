@@ -10,10 +10,10 @@ import android.content.res.Configuration
 import android.preference.PreferenceManager
 import com.vanniktech.emoji.EmojiManager
 import com.vanniktech.emoji.google.GoogleEmojiProvider
-import ru.itis.messaging_engine.BrambleAndroidEagerSingletons
-import ru.itis.messaging_engine.BrambleAppComponent
+import ru.itis.messaging_engine.MessagingEngineAndroidEagerSingletons
+import ru.itis.messaging_engine.MessagingEngineAppComponent
 import ru.itis.messaging_engine.BrambleCoreEagerSingletons
-import ru.itis.meshy.BriarCoreEagerSingletons
+import ru.itis.meshy.MeshyCoreEagerSingletons
 import ru.itis.meshy.R
 import ru.itis.meshy.android.logging.CachingLogHandler
 import ru.itis.meshy.android.settings.DisplayFragment.PREF_THEME
@@ -78,8 +78,8 @@ open class MeshyApplicationImpl : Application(), MeshyApplication {
 
         // Eager-синглтоны нужно поднять сразу после построения графа.
         BrambleCoreEagerSingletons.Helper.injectEagerSingletons(androidComponent)
-        BrambleAndroidEagerSingletons.Helper.injectEagerSingletons(androidComponent)
-        BriarCoreEagerSingletons.Helper.injectEagerSingletons(androidComponent)
+        MessagingEngineAndroidEagerSingletons.Helper.injectEagerSingletons(androidComponent)
+        MeshyCoreEagerSingletons.Helper.injectEagerSingletons(androidComponent)
         AndroidEagerSingletons.Helper.injectEagerSingletons(androidComponent)
         return androidComponent
     }
@@ -98,7 +98,7 @@ open class MeshyApplicationImpl : Application(), MeshyApplication {
         UiUtils.setTheme(ctx, theme)
     }
 
-    override fun getBrambleAppComponent(): BrambleAppComponent = applicationComponent
+    override fun getBrambleAppComponent(): MessagingEngineAppComponent = applicationComponent
 
     override fun getApplicationComponent(): AndroidComponent = applicationComponent
 

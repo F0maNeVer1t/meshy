@@ -43,6 +43,8 @@ import ru.itis.meshy.api.messaging.PrivateMessageFormat;
 import ru.itis.meshy.api.messaging.PrivateMessageHeader;
 import ru.itis.meshy.api.messaging.event.AttachmentReceivedEvent;
 import ru.itis.meshy.api.messaging.event.PrivateMessageReceivedEvent;
+import ru.itis.meshy.api.messaging.priority.MessagePriority;
+import ru.itis.meshy.api.messaging.priority.MessagePriorityClassifier;
 import org.briarproject.nullsafety.NotNullByDefault;
 
 import java.io.ByteArrayOutputStream;
@@ -61,6 +63,7 @@ import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 import static java.util.Collections.emptyList;
+import static java.util.logging.Level.INFO;
 import static java.util.logging.Logger.getLogger;
 import static ru.itis.messaging_engine.api.client.ContactGroupConstants.GROUP_KEY_CONTACT_ID;
 import static ru.itis.messaging_engine.api.sync.SyncConstants.MAX_MESSAGE_BODY_LENGTH;
@@ -83,6 +86,7 @@ import static ru.itis.meshy.messaging.MessagingConstants.MSG_KEY_AUTO_DELETE_TIM
 import static ru.itis.meshy.messaging.MessagingConstants.MSG_KEY_HAS_TEXT;
 import static ru.itis.meshy.messaging.MessagingConstants.MSG_KEY_LOCAL;
 import static ru.itis.meshy.messaging.MessagingConstants.MSG_KEY_MSG_TYPE;
+import static ru.itis.messaging_engine.api.sync.SyncConstants.MSG_KEY_PRIORITY;
 import static ru.itis.meshy.messaging.MessagingConstants.MSG_KEY_TIMESTAMP;
 
 @Immutable
@@ -102,6 +106,7 @@ class MessagingManagerImpl implements MessagingManager, IncomingMessageHook,
 	private final ClientVersioningManager clientVersioningManager;
 	private final ContactGroupFactory contactGroupFactory;
 	private final AutoDeleteManager autoDeleteManager;
+	private final MessagePriorityClassifier priorityClassifier;
 
 	@Inject
 	MessagingManagerImpl(
@@ -112,7 +117,8 @@ class MessagingManagerImpl implements MessagingManager, IncomingMessageHook,
 			ConversationManager conversationManager,
 			MessageTracker messageTracker,
 			ContactGroupFactory contactGroupFactory,
-			AutoDeleteManager autoDeleteManager) {
+			AutoDeleteManager autoDeleteManager,
+			MessagePriorityClassifier priorityClassifier) {
 		this.db = db;
 		this.clientHelper = clientHelper;
 		this.metadataParser = metadataParser;
@@ -121,6 +127,7 @@ class MessagingManagerImpl implements MessagingManager, IncomingMessageHook,
 		this.clientVersioningManager = clientVersioningManager;
 		this.contactGroupFactory = contactGroupFactory;
 		this.autoDeleteManager = autoDeleteManager;
+		this.priorityClassifier = priorityClassifier;
 	}
 
 	@Override
@@ -318,6 +325,9 @@ class MessagingManagerImpl implements MessagingManager, IncomingMessageHook,
 					meta.put(MSG_KEY_AUTO_DELETE_TIMER, timer);
 				}
 			}
+			// Classify message priority using FastText
+			MessagePriority priority = classifyMessagePriority(m);
+			meta.put(MSG_KEY_PRIORITY, priority.getValue());
 			// Mark attachments as shared and permanent now we're ready to send
 			for (AttachmentHeader a : m.getAttachmentHeaders()) {
 				db.setMessageShared(txn, a.getMessageId());
@@ -331,6 +341,24 @@ class MessagingManagerImpl implements MessagingManager, IncomingMessageHook,
 			conversationManager.trackOutgoingMessage(txn, m.getMessage());
 		} catch (FormatException e) {
 			throw new AssertionError(e);
+		}
+	}
+
+	private MessagePriority classifyMessagePriority(PrivateMessage m) {
+		if (!m.hasText()) return MessagePriority.STANDARD;
+		try {
+			BdfList body = clientHelper.toList(m.getMessage());
+			String text = body.size() == 1
+					? body.getString(0)
+					: body.getOptionalString(1);
+			if (text == null || text.isEmpty()) return MessagePriority.STANDARD;
+			MessagePriority priority = priorityClassifier.classify(text);
+			if (LOG.isLoggable(INFO))
+				LOG.info("Priority classification: text=\"" + text
+						+ "\" -> " + priority.name());
+			return priority;
+		} catch (FormatException e) {
+			return MessagePriority.STANDARD;
 		}
 	}
 

@@ -71,6 +71,9 @@ import ru.itis.messaging_engine.api.sync.validation.MessageState;
 import ru.itis.messaging_engine.api.transport.KeySetId;
 import ru.itis.messaging_engine.api.transport.TransportKeySet;
 import ru.itis.messaging_engine.api.transport.TransportKeys;
+import ru.itis.messaging_engine.api.FormatException;
+import ru.itis.messaging_engine.api.data.BdfDictionary;
+import ru.itis.messaging_engine.api.data.MetadataParser;
 import org.briarproject.nullsafety.NotNullByDefault;
 
 import java.util.ArrayList;
@@ -93,6 +96,8 @@ import static ru.itis.messaging_engine.api.sync.Group.Visibility.INVISIBLE;
 import static ru.itis.messaging_engine.api.sync.Group.Visibility.SHARED;
 import static ru.itis.messaging_engine.api.sync.validation.MessageState.DELIVERED;
 import static ru.itis.messaging_engine.api.sync.validation.MessageState.UNKNOWN;
+import static ru.itis.messaging_engine.api.sync.SyncConstants.MSG_KEY_PRIORITY;
+import static ru.itis.messaging_engine.api.sync.SyncConstants.PRIORITY_STANDARD;
 import static ru.itis.messaging_engine.db.DatabaseConstants.MAX_OFFERED_MESSAGES;
 import static ru.itis.messaging_engine.util.LogUtils.logDuration;
 import static ru.itis.messaging_engine.util.LogUtils.logException;
@@ -110,6 +115,7 @@ class DatabaseComponentImpl<T> implements DatabaseComponent {
 	private final EventBus eventBus;
 	private final Executor eventExecutor;
 	private final ShutdownManager shutdownManager;
+	private final MetadataParser metadataParser;
 	private final AtomicBoolean closed = new AtomicBoolean(false);
 	private final ReentrantReadWriteLock lock =
 			new ReentrantReadWriteLock(true);
@@ -118,12 +124,14 @@ class DatabaseComponentImpl<T> implements DatabaseComponent {
 	@Inject
 	DatabaseComponentImpl(Database<T> db, Class<T> txnClass, EventBus eventBus,
 			@EventExecutor Executor eventExecutor,
-			ShutdownManager shutdownManager) {
+			ShutdownManager shutdownManager,
+			MetadataParser metadataParser) {
 		this.db = db;
 		this.txnClass = txnClass;
 		this.eventBus = eventBus;
 		this.eventExecutor = eventExecutor;
 		this.shutdownManager = shutdownManager;
+		this.metadataParser = metadataParser;
 	}
 
 	@Override
@@ -454,6 +462,7 @@ class DatabaseComponentImpl<T> implements DatabaseComponent {
 			messages.add(message);
 			db.updateRetransmissionData(txn, c, m, maxLatency);
 		}
+		sortByPriority(txn, messages);
 		db.lowerRequestedFlag(txn, c, ids);
 		transaction.attach(new MessagesSentEvent(c, ids, totalLength));
 		return messages;
@@ -509,9 +518,39 @@ class DatabaseComponentImpl<T> implements DatabaseComponent {
 			messages.add(message);
 			db.updateRetransmissionData(txn, c, m, maxLatency);
 		}
+		sortByPriority(txn, messages);
 		db.lowerRequestedFlag(txn, c, ids);
 		transaction.attach(new MessagesSentEvent(c, ids, totalLength));
 		return messages;
+	}
+
+	private void sortByPriority(T txn, List<Message> messages)
+			throws DbException {
+		if (messages.size() <= 1) return;
+		// Build a priority lookup: messageId -> priority byte
+		Map<MessageId, Byte> priorities = new java.util.HashMap<>(
+				messages.size());
+		for (Message m : messages) {
+			priorities.put(m.getId(), getMessagePriority(txn, m.getId()));
+		}
+		messages.sort((a, b) -> {
+			int cmp = Byte.compare(
+					priorities.getOrDefault(b.getId(), PRIORITY_STANDARD),
+					priorities.getOrDefault(a.getId(), PRIORITY_STANDARD));
+			if (cmp != 0) return cmp;
+			return Long.compare(a.getTimestamp(), b.getTimestamp());
+		});
+	}
+
+	private byte getMessagePriority(T txn, MessageId m) throws DbException {
+		try {
+			Metadata meta = db.getMessageMetadata(txn, m);
+			BdfDictionary dict = metadataParser.parse(meta);
+			Long priority = dict.getOptionalLong(MSG_KEY_PRIORITY);
+			return priority != null ? priority.byteValue() : PRIORITY_STANDARD;
+		} catch (FormatException e) {
+			return PRIORITY_STANDARD;
+		}
 	}
 
 	@Override

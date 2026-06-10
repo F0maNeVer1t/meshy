@@ -3,6 +3,7 @@ package ru.itis.meshy.android.priority
 import android.app.Application
 import dagger.Module
 import dagger.Provides
+import ru.itis.meshy.api.messaging.priority.MessagePriorityClassifier
 import javax.inject.Singleton
 
 @Module
@@ -13,5 +14,5 @@ class PriorityModule {
     fun provideMessagePriorityClassifier(
         application: Application
     ): MessagePriorityClassifier =
-        MessagePriorityClassifier(application.applicationContext)
+        MessagePriorityClassifierImpl(application.applicationContext)
 }

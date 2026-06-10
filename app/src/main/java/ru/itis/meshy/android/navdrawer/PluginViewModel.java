@@ -39,6 +39,7 @@ import ru.itis.messaging_engine.api.plugin.Plugin.State;
 import ru.itis.messaging_engine.api.plugin.PluginManager;
 import ru.itis.messaging_engine.api.plugin.TorConstants;
 import ru.itis.messaging_engine.api.plugin.TransportId;
+import ru.itis.messaging_engine.api.plugin.WifiDirectConstants;
 import ru.itis.messaging_engine.api.plugin.event.TransportStateEvent;
 import ru.itis.messaging_engine.api.settings.Settings;
 import ru.itis.messaging_engine.api.settings.SettingsManager;
@@ -70,12 +71,16 @@ public class PluginViewModel extends DbViewModel implements EventListener {
 			new MutableLiveData<>();
 	private final MutableLiveData<State> btPluginState =
 			new MutableLiveData<>();
+	private final MutableLiveData<State> wifiDirectPluginState =
+			new MutableLiveData<>();
 
 	private final MutableLiveData<Boolean> torEnabledSetting =
 			new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> wifiEnabledSetting =
 			new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> btEnabledSetting =
+			new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> wifiDirectEnabledSetting =
 			new MutableLiveData<>(false);
 
 	private final MutableLiveData<NetworkStatus> networkStatus =
@@ -103,6 +108,7 @@ public class PluginViewModel extends DbViewModel implements EventListener {
 		torPluginState.setValue(getTransportState(TorConstants.ID));
 		wifiPluginState.setValue(getTransportState(LanTcpConstants.ID));
 		btPluginState.setValue(getTransportState(BluetoothConstants.ID));
+		wifiDirectPluginState.setValue(getTransportState(WifiDirectConstants.ID));
 		initialiseBluetoothState();
 		loadSettings();
 	}
@@ -133,6 +139,11 @@ public class PluginViewModel extends DbViewModel implements EventListener {
 				boolean enable = s.getSettings().getBoolean(PREF_PLUGIN_ENABLE,
 						BluetoothConstants.DEFAULT_PREF_PLUGIN_ENABLE);
 				btEnabledSetting.setValue(enable);
+			} else if (s.getNamespace().equals(
+					WifiDirectConstants.ID.getString())) {
+				boolean enable = s.getSettings().getBoolean(PREF_PLUGIN_ENABLE,
+						WifiDirectConstants.DEFAULT_PREF_PLUGIN_ENABLE);
+				wifiDirectEnabledSetting.setValue(enable);
 			}
 		} else if (e instanceof TransportStateEvent) {
 			TransportStateEvent t = (TransportStateEvent) e;
@@ -156,6 +167,7 @@ public class PluginViewModel extends DbViewModel implements EventListener {
 		if (id.equals(TorConstants.ID)) return torEnabledSetting;
 		else if (id.equals(LanTcpConstants.ID)) return wifiEnabledSetting;
 		else if (id.equals(BluetoothConstants.ID)) return btEnabledSetting;
+		else if (id.equals(WifiDirectConstants.ID)) return wifiDirectEnabledSetting;
 		else throw new IllegalArgumentException();
 	}
 
@@ -196,6 +208,9 @@ public class PluginViewModel extends DbViewModel implements EventListener {
 				boolean bt = isPluginEnabled(BluetoothConstants.ID,
 						BluetoothConstants.DEFAULT_PREF_PLUGIN_ENABLE);
 				btEnabledSetting.postValue(bt);
+				boolean wd = isPluginEnabled(WifiDirectConstants.ID,
+						WifiDirectConstants.DEFAULT_PREF_PLUGIN_ENABLE);
+				wifiDirectEnabledSetting.postValue(wd);
 			} catch (DbException e) {
 				handleException(e);
 			}
@@ -218,6 +233,7 @@ public class PluginViewModel extends DbViewModel implements EventListener {
 		if (id.equals(TorConstants.ID)) return torPluginState;
 		else if (id.equals(LanTcpConstants.ID)) return wifiPluginState;
 		else if (id.equals(BluetoothConstants.ID)) return btPluginState;
+		else if (id.equals(WifiDirectConstants.ID)) return wifiDirectPluginState;
 		else return null;
 	}
 

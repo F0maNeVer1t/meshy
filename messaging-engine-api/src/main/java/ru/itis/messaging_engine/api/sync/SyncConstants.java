@@ -61,4 +61,13 @@ public interface SyncConstants {
 	 * The maximum allowed latency for any transport, in milliseconds.
 	 */
 	long MAX_TRANSPORT_LATENCY = DAYS.toMillis(365);
+
+	/**
+	 * Metadata key for message priority. Value is a byte:
+	 * 0 = STANDARD, 1 = EMERGENCY.
+	 */
+	String MSG_KEY_PRIORITY = "priority";
+
+	byte PRIORITY_STANDARD = 0;
+	byte PRIORITY_EMERGENCY = 1;
 }

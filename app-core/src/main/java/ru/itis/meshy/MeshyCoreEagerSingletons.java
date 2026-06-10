@@ -13,7 +13,7 @@ import ru.itis.meshy.privategroup.PrivateGroupModule;
 import ru.itis.meshy.privategroup.invitation.GroupInvitationModule;
 import ru.itis.meshy.sharing.SharingModule;
 
-public interface BriarCoreEagerSingletons {
+public interface MeshyCoreEagerSingletons {
 
 	void inject(AutoDeleteModule.EagerSingletons init);
 
@@ -41,7 +41,7 @@ public interface BriarCoreEagerSingletons {
 
 	class Helper {
 
-		public static void injectEagerSingletons(BriarCoreEagerSingletons c) {
+		public static void injectEagerSingletons(MeshyCoreEagerSingletons c) {
 			c.inject(new AutoDeleteModule.EagerSingletons());
 			c.inject(new AvatarModule.EagerSingletons());
 			c.inject(new BlogModule.EagerSingletons());

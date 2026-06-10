@@ -33,6 +33,7 @@ import ru.itis.messaging_engine.api.reporting.DevConfig
 import ru.itis.messaging_engine.api.reporting.ReportingConstants.DEV_ONION_ADDRESS
 import ru.itis.messaging_engine.api.reporting.ReportingConstants.DEV_PUBLIC_KEY_HEX
 import ru.itis.messaging_engine.plugin.bluetooth.AndroidBluetoothPluginFactory
+import ru.itis.messaging_engine.plugin.wifidirect.AndroidWifiDirectPluginFactory
 import ru.itis.messaging_engine.plugin.file.AndroidRemovableDrivePluginFactory
 import ru.itis.messaging_engine.plugin.file.MailboxPluginFactory
 import ru.itis.messaging_engine.plugin.tcp.AndroidLanTcpPluginFactory
@@ -157,13 +158,14 @@ class AppModule(private val application: Application) {
         bluetooth: AndroidBluetoothPluginFactory,
         tor: AndroidTorPluginFactory,
         lan: AndroidLanTcpPluginFactory,
+        wifiDirect: AndroidWifiDirectPluginFactory,
         drive: AndroidRemovableDrivePluginFactory,
         mailbox: MailboxPluginFactory,
         featureFlags: FeatureFlags,
     ): PluginConfig = object : PluginConfig {
 
         override fun getDuplexFactories(): Collection<DuplexPluginFactory> =
-            listOf(bluetooth, tor, lan)
+            listOf(bluetooth, tor, lan, wifiDirect)
 
         override fun getSimplexFactories(): Collection<SimplexPluginFactory> =
             listOf(mailbox, drive)

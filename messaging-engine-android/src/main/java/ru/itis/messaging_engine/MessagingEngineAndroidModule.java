@@ -27,5 +27,5 @@ import dagger.Module;
 		ReportingModule.class,
 		SocksModule.class
 })
-public class BrambleAndroidModule {
+public class MessagingEngineAndroidModule {
 }

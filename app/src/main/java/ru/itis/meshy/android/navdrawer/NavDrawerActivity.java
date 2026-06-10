@@ -56,6 +56,7 @@ import ru.itis.messaging_engine.api.plugin.LanTcpConstants;
 import ru.itis.messaging_engine.api.plugin.Plugin.State;
 import ru.itis.messaging_engine.api.plugin.TorConstants;
 import ru.itis.messaging_engine.api.plugin.TransportId;
+import ru.itis.messaging_engine.api.plugin.WifiDirectConstants;
 import ru.itis.meshy.R;
 import ru.itis.meshy.android.StartupFailureActivity;
 import ru.itis.meshy.android.activity.ActivityComponent;
@@ -380,13 +381,13 @@ public class NavDrawerActivity extends MeshyActivity implements
 				TextView text = view.findViewById(R.id.textView);
 				text.setText(getString(t.label));
 
-				if (t.id.equals(TorConstants.ID)) torIcon.setValue(icon);
+				if (t.id.equals(WifiDirectConstants.ID)) torIcon.setValue(icon);
 
 				return view;
 			}
 		};
 
-		transports.add(createTransport(TorConstants.ID,
+		transports.add(createTransport(WifiDirectConstants.ID,
 				R.drawable.transport_wifi_direct, R.string.transport_wifi_direct));
 		transports.add(createTransport(LanTcpConstants.ID,
 				R.drawable.transport_lan, R.string.transport_lan));

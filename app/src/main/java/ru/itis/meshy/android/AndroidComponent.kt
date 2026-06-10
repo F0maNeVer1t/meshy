@@ -3,9 +3,9 @@ package ru.itis.meshy.android
 import androidx.lifecycle.ViewModelProvider
 import dagger.Component
 import org.briarproject.android.dontkillmelib.wakelock.AndroidWakeLockManager
-import ru.itis.messaging_engine.BrambleAndroidEagerSingletons
-import ru.itis.messaging_engine.BrambleAndroidModule
-import ru.itis.messaging_engine.BrambleAppComponent
+import ru.itis.messaging_engine.MessagingEngineAndroidEagerSingletons
+import ru.itis.messaging_engine.MessagingEngineAndroidModule
+import ru.itis.messaging_engine.MessagingEngineAppComponent
 import ru.itis.messaging_engine.BrambleCoreEagerSingletons
 import ru.itis.messaging_engine.BrambleCoreModule
 import ru.itis.messaging_engine.api.FeatureFlags
@@ -31,8 +31,8 @@ import ru.itis.messaging_engine.api.system.Clock
 import ru.itis.messaging_engine.mailbox.ModularMailboxModule
 import ru.itis.messaging_engine.plugin.file.RemovableDriveModule
 import ru.itis.messaging_engine.system.ClockModule
-import ru.itis.meshy.BriarCoreEagerSingletons
-import ru.itis.meshy.BriarCoreModule
+import ru.itis.meshy.MeshyCoreEagerSingletons
+import ru.itis.meshy.MeshyCoreModule
 import ru.itis.meshy.api.attachment.AttachmentReader
 import ru.itis.meshy.api.autodelete.AutoDeleteManager
 import ru.itis.meshy.api.client.MessageTracker
@@ -91,8 +91,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         BrambleCoreModule::class,
-        BriarCoreModule::class,
-        BrambleAndroidModule::class,
+        MeshyCoreModule::class,
+        MessagingEngineAndroidModule::class,
         MeshyAccountModule::class,
         AppModule::class,
         AttachmentModule::class,
@@ -105,10 +105,10 @@ import javax.inject.Singleton
 )
 interface AndroidComponent :
     BrambleCoreEagerSingletons,
-    BrambleAndroidEagerSingletons,
-    BriarCoreEagerSingletons,
+    MessagingEngineAndroidEagerSingletons,
+    MeshyCoreEagerSingletons,
     AndroidEagerSingletons,
-    BrambleAppComponent {
+    MessagingEngineAppComponent {
 
     // ── Exposed objects ────────────────────────────────────────────────
 

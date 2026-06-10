@@ -1,5 +1,6 @@
 package ru.itis.messaging_engine.db;
 
+import ru.itis.messaging_engine.api.data.MetadataParser;
 import ru.itis.messaging_engine.api.db.DatabaseComponent;
 import ru.itis.messaging_engine.api.db.DatabaseConfig;
 import ru.itis.messaging_engine.api.db.TransactionManager;
@@ -31,9 +32,10 @@ public class DatabaseModule {
 	@Singleton
 	DatabaseComponent provideDatabaseComponent(Database<Connection> db,
 			EventBus eventBus, @EventExecutor Executor eventExecutor,
-			ShutdownManager shutdownManager) {
+			ShutdownManager shutdownManager,
+			MetadataParser metadataParser) {
 		return new DatabaseComponentImpl<>(db, Connection.class, eventBus,
-				eventExecutor, shutdownManager);
+				eventExecutor, shutdownManager, metadataParser);
 	}
 
 	@Provides

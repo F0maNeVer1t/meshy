@@ -73,6 +73,19 @@ android {
         buildConfigField("String", "TorVersion", "\"${libs.versions.tor.get()}\"")
         buildConfigField("String", "GitHash", "\"$gitHash\"")
         buildConfigField("Long", "BuildTimestamp", "${buildTimestamp}L")
+
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        }
+    }
+
+    ndkVersion = "27.0.12077973"
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
     }
 
     buildTypes {
@@ -144,8 +157,6 @@ dependencies {
     // ── Kotlin stdlib & coroutines ──────────────────────────────────
     implementation(libs.kotlin.stdlib)
     implementation(libs.bundles.kotlinx.coroutines)
-
-    implementation(libs.jfasttext)
 
     // ── Networking ──────────────────────────────────────────────────
     implementation(libs.okhttp)

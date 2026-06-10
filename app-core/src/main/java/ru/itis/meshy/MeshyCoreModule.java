@@ -35,5 +35,5 @@ import dagger.Module;
 		SharingModule.class,
 		TestModule.class
 })
-public class BriarCoreModule {
+public class MeshyCoreModule {
 }

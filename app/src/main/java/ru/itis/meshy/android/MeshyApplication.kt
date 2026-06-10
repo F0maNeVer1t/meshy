@@ -2,14 +2,14 @@ package ru.itis.meshy.android
 
 import android.app.Activity
 import android.content.SharedPreferences
-import ru.itis.messaging_engine.BrambleApplication
+import ru.itis.messaging_engine.MessagingEngineApplication
 import ru.itis.meshy.android.navdrawer.NavDrawerActivity
 
 /**
  * Существует, чтобы объект Application не приходилось безусловно
  * приводить к meshy-application: коду достаточно интерфейса.
  */
-interface MeshyApplication : BrambleApplication {
+interface MeshyApplication : MessagingEngineApplication {
 
     fun getApplicationComponent(): AndroidComponent
 

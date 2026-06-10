@@ -4,14 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import ru.itis.messaging_engine.BrambleApplication;
+import ru.itis.messaging_engine.MessagingEngineApplication;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context ctx, Intent intent) {
-		BrambleApplication app =
-				(BrambleApplication) ctx.getApplicationContext();
+		MessagingEngineApplication app =
+				(MessagingEngineApplication) ctx.getApplicationContext();
 		app.getBrambleAppComponent().alarmListener().onAlarm(intent);
 	}
 }
