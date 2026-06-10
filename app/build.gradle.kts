@@ -145,6 +145,8 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.bundles.kotlinx.coroutines)
 
+    implementation(libs.jfasttext)
+
     // ── Networking ──────────────────────────────────────────────────
     implementation(libs.okhttp)
     implementation(libs.jsoup)

@@ -62,6 +62,7 @@ import ru.itis.meshy.android.mailbox.MailboxStatusFragment
 import ru.itis.meshy.android.mailbox.OfflineFragment
 import ru.itis.meshy.android.mailbox.SetupDownloadFragment
 import ru.itis.meshy.android.mailbox.SetupIntroFragment
+import ru.itis.meshy.android.priority.PriorityModule
 import ru.itis.meshy.android.removabledrive.ChooserFragment
 import ru.itis.meshy.android.removabledrive.ReceiveFragment
 import ru.itis.meshy.android.removabledrive.SendFragment
@@ -99,6 +100,7 @@ import javax.inject.Singleton
         MediaModule::class,
         ModularMailboxModule::class,
         RemovableDriveModule::class,
+        PriorityModule::class
     ],
 )
 interface AndroidComponent :

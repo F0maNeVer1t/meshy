@@ -30,6 +30,8 @@ jmock = "2.12.0"
 # Compose. Stays usable from Java/Dagger code.
 kotlinx-coroutines = "1.11.0"
 
+jfasttext = "0.5"
+
 # TODO [НЕ НУЖЕН для вашего проекта] — Tor и сопутствующие.
 # Удалить после вычистки Tor-плагинов из messaging_engine-core / messaging_engine-android.
 tor = "0.4.8.22"
@@ -152,6 +154,8 @@ bouncy-castle-prov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref =
 # ── TODO [НЕ НУЖЕН] Tor / Lyrebird / OnionWrapper ───────────────────
 # Версии оставлены под адаптацию build.gradle модулей
 # messaging_engine-core и messaging-engine-android.
+
+jfasttext = { module = "com.github.vinhkhuc:JFastText", version.ref = "jfasttext" }
 
 # ── AndroidX (meshy-android) ────────────────────────────────────────
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
